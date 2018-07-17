@@ -1,47 +1,65 @@
-$(document).ready(function() {
-	
-	/* ===== Affix Sidebar ===== */
-	/* Ref: http://getbootstrap.com/javascript/#affix-examples */
+jQuery(document).ready(function($) {
 
-    	
-	$('#doc-menu').affix({
-        offset: {
-            top: ($('#header').outerHeight(true) + $('#doc-header').outerHeight(true)) + 45,
-            bottom: ($('#footer').outerHeight(true) + $('#promo-block').outerHeight(true)) + 75
+
+    /*======= Skillset *=======*/
+    
+    $('.level-bar-inner').css('width', '0');
+    
+    $(window).on('load', function() {
+
+        $('.level-bar-inner').each(function() {
+        
+            var itemWidth = $(this).data('level');
+            
+            $(this).animate({
+                width: itemWidth
+            }, 800);
+            
+        });
+
+    });
+    
+    /* Bootstrap Tooltip for Skillset */
+    $('.level-label').tooltip();
+    
+    
+    /* jQuery RSS - https://github.com/sdepold/jquery-rss */
+    
+    $("#rss-feeds").rss(
+    
+        //Change this to your own rss feeds
+        "http://feeds.feedburner.com/TechCrunch/startups",
+        
+        {
+        // how many entries do you want?
+        // default: 4
+        // valid values: any integer
+        limit: 3,
+        
+        // the effect, which is used to let the entries appear
+        // default: 'show'
+        // valid values: 'show', 'slide', 'slideFast', 'slideSynced', 'slideFastSynced'
+        effect: 'slideFastSynced',
+        
+        // outer template for the html transformation
+        // default: "<ul>{entries}</ul>"
+        // valid values: any string
+        layoutTemplate: "<div class='item'>{entries}</div>",
+        
+        // inner template for each entry
+        // default: '<li><a href="{url}">[{author}@{date}] {title}</a><br/>{shortBodyPlain}</li>'
+        // valid values: any string
+        entryTemplate: '<h3 class="title"><a href="{url}" target="_blank">{title}</a></h3><div><p>{shortBodyPlain}</p><a class="more-link" href="{url}" target="_blank"><i class="fa fa-external-link"></i>Read more</a></div>'
+        
         }
-    });
+    );
     
-    /* Hack related to: https://github.com/twbs/bootstrap/issues/10236 */
-    $(window).on('load resize', function() {
-        $(window).trigger('scroll'); 
-    });
-
-    /* Activate scrollspy menu */
-    $('body').scrollspy({target: '#doc-nav', offset: 100});
+    /* Github Calendar - https://github.com/IonicaBizau/github-calendar */
+    GitHubCalendar("#github-graph", "IonicaBizau");
     
-    /* Smooth scrolling */
-	$('a.scrollto').on('click', function(e){
-        //store hash
-        var target = this.hash;    
-        e.preventDefault();
-		$('body').scrollTo(target, 800, {offset: 0, 'axis':'y'});
-		
-	});
-	
     
-    /* ======= jQuery Responsive equal heights plugin ======= */
-    /* Ref: https://github.com/liabru/jquery-match-height */
-    
-     $('#cards-wrapper .item-inner').matchHeight();
-     $('#showcase .card').matchHeight();
-     
-    /* Bootstrap lightbox */
-    /* Ref: http://ashleydw.github.io/lightbox/ */
-
-    $(document).delegate('*[data-toggle="lightbox"]', 'click', function(e) {
-        e.preventDefault();
-        $(this).ekkoLightbox();
-    });    
+    /* Github Activity Feed - https://github.com/caseyscarborough/github-activity */
+    GitHubActivity.feed({ username: "caseyscarborough", selector: "#ghfeed" });
 
 
 });
